@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashley Borde — UI/UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#141210;
+  --ink-2:#2e2b27;
+  --ink-3:#5c5852;
+  --ink-4:#8a8680;
+  --ink-5:#b0aca6;
+  --paper:#faf8f5;
+  --paper-2:#f0ede8;
+  --paper-3:#e3ded6;
+  --accent:#1b3a2d;
+  --accent-2:#2d5c46;
+  --accent-mid:#4e8c6e;
+  --accent-light:#deeee7;
+  --gold:#b8975a;
+  --gold-light:#f5edd8;
+  --line:rgba(20,18,16,0.08);
+  --line-2:rgba(20,18,16,0.14);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Sora',system-ui,sans-serif;
+  --sb:230px;
+  --ease:0.2s cubic-bezier(.4,0,.2,1);
+  --ease-spring:0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+html{font-size:15px;scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;display:flex;}
+.shell{display:flex;width:100%;max-width:1160px;margin:0 auto;position:relative;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb);flex-shrink:0;border-right:1px solid var(--line-2);padding:38px 20px 32px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--paper);}
+.sidebar::-webkit-scrollbar{width:0;}
+.sb-profile{margin-bottom:28px;}
+.sb-photo-wrap{position:relative;width:120px;height:120px;margin-bottom:16px;}
+.sb-photo{width:120px;height:120px;border-radius:22px;overflow:hidden;background:var(--paper-2);border:1.5px solid var(--paper-3);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--accent);}
+.sb-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.sb-status{position:absolute;bottom:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#4caf7d;border:2px solid var(--paper);}
+.sb-name{font-family:var(--serif);font-size:18px;line-height:1.25;color:var(--ink);margin-bottom:3px;font-weight:500;}
+.sb-role{font-size:11px;font-weight:600;color:var(--accent-mid);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase;}
+.sb-loc{font-size:11.5px;color:var(--ink-3);display:inline-flex;align-items:center;gap:5px;background:var(--paper-2);padding:4px 10px;border-radius:20px;border:1px solid var(--paper-3);}
+.sb-loc svg{width:10px;height:10px;color:var(--ink-4);flex-shrink:0;}
+.sb-divider{height:1px;background:var(--line-2);margin:18px 0;}
+.pill-nav{display:flex;flex-direction:column;gap:2px;margin-bottom:0;}
+.pill-nav a{font-size:12.5px;font-weight:400;color:var(--ink-3);text-decoration:none;padding:8px 12px;border-radius:10px;display:flex;align-items:center;gap:9px;transition:background var(--ease),color var(--ease),transform var(--ease);position:relative;}
+.pill-nav a .nav-icon{width:30px;height:30px;border-radius:8px;background:var(--paper-2);border:1px solid var(--paper-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--ease),border-color var(--ease),transform var(--ease-spring);}
+.pill-nav a .nav-icon svg{width:14px;height:14px;color:var(--ink-4);transition:color var(--ease);}
+.pill-nav a:hover{background:var(--paper-2);color:var(--ink-2);transform:translateX(2px);}
+.pill-nav a:hover .nav-icon{background:var(--paper-3);transform:scale(1.08);}
+.pill-nav a:hover .nav-icon svg{color:var(--ink-2);}
+.pill-nav a.active{background:var(--accent);color:#fff;}
+.pill-nav a.active .nav-label{color:#fff;font-weight:500;}
+.pill-nav a.active .nav-icon{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.25);}
+.pill-nav a.active .nav-icon svg{color:#fff;}
+.sb-contacts{margin-top:auto;display:flex;flex-direction:column;gap:5px;}
+.sb-contact-link{font-size:11px;color:var(--ink-3);text-decoration:none;display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;transition:background var(--ease),color var(--ease);}
+.sb-contact-link:hover{background:var(--paper-2);color:var(--ink);}
+.sb-contact-link svg{width:13px;height:13px;color:var(--ink-4);flex-shrink:0;transition:color var(--ease);}
+.sb-contact-link:hover svg{color:var(--accent-mid);}
+
+
+/* ── Decorative about elements ── */
+.about-deco-bar{
+  display:flex;align-items:center;gap:8px;margin-bottom:28px;
+}
+.about-deco-bar .deco-pill{
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 12px;border-radius:100px;border:1px solid var(--paper-3);
+  color:var(--ink-4);background:var(--paper-2);
+  display:inline-flex;align-items:center;gap:5px;
+}
+.about-deco-bar .deco-pill svg{width:10px;height:10px;color:var(--accent-mid);}
+.about-deco-bar .deco-line{flex:1;height:1px;background:var(--line);}
+
+
+
+.about-quote-block{
+  border:1px solid var(--paper-3);border-radius:14px;padding:20px 22px;
+  margin:32px 0;background:var(--paper-2);position:relative;overflow:hidden;
+}
+.about-quote-block::before{
+  content:'"';position:absolute;top:-10px;left:14px;
+  font-family:var(--serif);font-size:80px;color:var(--accent-mid);opacity:.12;line-height:1;
+}
+.about-quote-text{
+  font-family:var(--serif);font-size:17px;line-height:1.6;
+  color:var(--ink-2);font-style:italic;font-weight:400;
+  position:relative;z-index:1;
+}
+.about-quote-author{
+  font-size:11px;color:var(--ink-4);margin-top:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.about-quote-author::before{content:'—';color:var(--accent-mid);}
+
+.deco-tag-row{
+  display:flex;flex-wrap:wrap;gap:7px;margin:20px 0 32px;
+}
+.deco-tag{
+  font-size:11.5px;padding:6px 14px;border-radius:100px;
+  border:1.5px solid var(--paper-3);color:var(--ink-3);
+  background:var(--paper);
+  transition:all var(--ease);display:inline-flex;align-items:center;gap:6px;
+}
+.deco-tag svg{width:11px;height:11px;color:var(--accent-mid);}
+.deco-tag:hover{border-color:var(--accent-mid);color:var(--accent);background:var(--accent-light);}
+
+/* MAIN */
+.main{flex:1;padding:44px 52px 100px;min-width:0;position:relative;}
+.section{display:none;}
+.section.active{display:block;animation:sectionIn .32s cubic-bezier(.4,0,.2,1);}
+@keyframes sectionIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* Section header */
+.sec-header{margin-bottom:32px;}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:20px;height:1.5px;background:var(--accent-mid);}
+.sec-title{font-family:var(--serif);font-size:34px;line-height:1.1;color:var(--ink);font-weight:500;}
+.sec-title em{font-style:italic;color:var(--ink-3);}
+.sec-divider{height:1px;background:linear-gradient(90deg,var(--line-2) 0%,transparent 100%);margin-top:20px;}
+
+/* Block title */
+.block-title{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:18px;margin-top:36px;display:flex;align-items:center;gap:10px;}
+.block-title::after{content:'';flex:1;height:1px;background:var(--line-2);}
+.block-title svg{width:13px;height:13px;color:var(--ink-5);}
+
+/* ABOUT */
+.story-section{margin-bottom:40px;}
+.story-section h3{font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:16px;line-height:1.25;font-weight:500;display:flex;align-items:center;gap:10px;}
+.h3-icon{width:30px;height:30px;background:var(--accent-light);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(78,140,110,.18);}
+.h3-icon svg{width:14px;height:14px;color:var(--accent);}
+.story-body{font-size:13.5px;line-height:1.9;color:var(--ink-2);font-weight:300;}
+.story-body p{margin-bottom:14px;}
+.story-body p:last-child{margin-bottom:0;}
+.story-body strong{font-weight:600;color:var(--ink);}
+.story-body em{font-style:italic;color:var(--ink-3);}
+.callout{background:linear-gradient(135deg,var(--accent-light),#f0f7f4);border-left:3px solid var(--accent-mid);border-radius:0 10px 10px 0;padding:14px 18px;margin:18px 0;font-size:13.5px;font-style:italic;color:var(--accent);font-weight:400;line-height:1.65;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+.list-group{background:var(--paper-2);border-radius:12px;padding:16px;border:1px solid var(--paper-3);transition:border-color var(--ease),transform var(--ease);}
+.list-group:hover{border-color:var(--accent-light);transform:translateY(-2px);}
+.list-group h4{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.list-group h4 svg{width:12px;height:12px;}
+.list-group ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.list-group ul li{font-size:12.5px;color:var(--ink-2);font-weight:300;display:flex;align-items:flex-start;gap:8px;}
+.list-group ul li::before{content:'→';color:var(--accent-mid);font-size:11px;flex-shrink:0;margin-top:2px;}
+.beyond-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+.beyond-list li{font-size:13px;color:var(--ink-2);font-weight:300;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper-2);border-radius:10px;border:1px solid transparent;transition:border-color var(--ease),background var(--ease),transform var(--ease);}
+.beyond-list li:hover{border-color:var(--paper-3);background:var(--paper);transform:translateX(4px);}
+.beyond-list li svg{width:14px;height:14px;color:var(--accent-mid);flex-shrink:0;}
+
+/* RESUME HERO — lighter color */
+.resume-hero{background:linear-gradient(135deg,#2a5240 0%,#3a6e55 100%);border-radius:14px;padding:26px 28px;margin-bottom:28px;position:relative;overflow:hidden;}
+.resume-hero::after{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.resume-hero::before{content:'';position:absolute;right:60px;bottom:-40px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.resume-hero p{font-size:13px;line-height:1.85;color:rgba(255,255,255,0.88);font-weight:300;margin-bottom:10px;position:relative;z-index:1;}
+.resume-hero p:first-child{font-size:14px;color:#fff;font-weight:500;margin-bottom:12px;font-family:var(--sans);letter-spacing:-.01em;}
+.resume-hero p:last-child{margin-bottom:0;}
+
+/* Stats */
+.stat-row{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.stat-card{background:var(--paper);border-radius:12px;padding:16px 20px;border:1px solid var(--paper-3);flex:1;min-width:120px;transition:border-color var(--ease),transform var(--ease),box-shadow var(--ease);}
+.stat-card:hover{border-color:var(--accent-light);transform:translateY(-2px);box-shadow:0 6px 20px rgba(27,58,45,.07);}
+.stat-num{font-family:var(--serif);font-size:28px;color:var(--ink);margin-bottom:3px;font-weight:400;}
+.stat-label{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4);line-height:1.4;}
+
+/* Skills */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.sk-group{background:var(--paper-2);border-radius:10px;padding:14px 16px;border:1px solid var(--paper-3);transition:border-color var(--ease),transform var(--ease);}
+.sk-group:hover{border-color:var(--accent-light);transform:translateY(-2px);}
+.sk-group-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:10px;}
+.sk-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.sk-tag{font-size:11px;padding:3px 10px;background:var(--paper);border:1px solid var(--paper-3);border-radius:100px;color:var(--ink-2);transition:background var(--ease),border-color var(--ease),color var(--ease);}
+.sk-tag:hover{background:var(--accent-light);border-color:var(--accent-mid);color:var(--accent);}
+
+/* Experience */
+.exp-item{padding:22px 0;border-bottom:1px solid var(--line);position:relative;}
+.exp-item:last-child{border-bottom:none;}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;}
+.exp-left{display:flex;align-items:flex-start;gap:12px;}
+/* Company logo image box */
+.exp-logo{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--paper);border:1px solid var(--paper-3);overflow:hidden;display:flex;align-items:center;justify-content:center;transition:transform var(--ease-spring);margin-top:1px;}
+.exp-logo img{width:100%;height:100%;object-fit:contain;display:block;padding:3px;}
+.exp-logo .exp-logo-fallback{font-size:12px;font-weight:600;color:var(--accent-mid);font-family:var(--serif);}
+.exp-item:hover .exp-logo{transform:scale(1.06);}
+.exp-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px;}
+.exp-company{font-size:12px;color:var(--ink-3);}
+.exp-date{font-size:11.5px;color:var(--ink-3);white-space:nowrap;flex-shrink:0;background:var(--paper-2);padding:3px 10px;border-radius:20px;border:1px solid var(--paper-3);font-weight:400;}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:12px;padding-left:52px;}
+.exp-bullets li{font-size:12.5px;color:var(--ink-2);line-height:1.7;padding-left:14px;position:relative;font-weight:300;}
+.exp-bullets li::before{content:'';position:absolute;left:0;top:9px;width:5px;height:1.5px;background:var(--ink-4);}
+
+/* Education */
+.edu-item{padding:16px;border-radius:12px;background:var(--paper-2);border:1px solid var(--paper-3);margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;transition:border-color var(--ease),transform var(--ease);}
+.edu-item:hover{border-color:var(--accent-light);transform:translateX(3px);}
+.edu-icon{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--gold-light);border:1px solid rgba(184,151,90,.2);display:flex;align-items:center;justify-content:center;}
+.edu-icon svg{width:18px;height:18px;color:var(--gold);}
+.edu-body{flex:1;}
+.edu-school{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.edu-degree{font-size:12.5px;color:var(--ink-3);margin-bottom:2px;font-weight:300;}
+.edu-sub{font-size:11.5px;color:var(--ink-4);}
+.edu-date{font-size:11.5px;color:var(--ink-3);white-space:nowrap;flex-shrink:0;background:var(--paper);padding:3px 9px;border-radius:20px;border:1px solid var(--paper-3);}
+
+/* Certifications — clickable card with logo */
+.cert-item{padding:14px 16px;border-radius:12px;background:var(--paper-2);border:1px solid var(--paper-3);margin-bottom:8px;display:flex;align-items:center;gap:14px;transition:border-color var(--ease),transform var(--ease),box-shadow var(--ease);text-decoration:none;}
+.cert-item:hover{border-color:var(--accent-mid);transform:translateX(4px);box-shadow:0 4px 16px rgba(27,58,45,.07);}
+.cert-logo{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--paper);border:1px solid var(--paper-3);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.cert-logo img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.cert-body{flex:1;}
+.cert-name{font-size:13px;color:var(--ink);font-weight:400;margin-bottom:2px;}
+.cert-org{font-size:11px;color:var(--ink-4);font-weight:300;}
+.cert-arrow{width:24px;height:24px;background:var(--paper);border-radius:6px;border:1px solid var(--paper-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--ease),border-color var(--ease);}
+.cert-item:hover .cert-arrow{background:var(--accent-light);border-color:var(--accent-mid);}
+.cert-arrow svg{width:10px;height:10px;color:var(--ink-4);transition:color var(--ease);}
+.cert-item:hover .cert-arrow svg{color:var(--accent);}
+
+/* PROJECTS */
+.proj-intro{font-size:13.5px;line-height:1.8;color:var(--ink-3);max-width:520px;margin-bottom:28px;font-weight:300;}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.proj-card{border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:var(--paper);text-decoration:none;display:block;transition:border-color var(--ease),transform var(--ease),box-shadow var(--ease);}
+.proj-card:hover{border-color:var(--accent-mid);transform:translateY(-4px);box-shadow:0 16px 40px rgba(20,18,16,.08);}
+/* Thumb with real image */
+.proj-thumb{height:130px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--ease);}
+.proj-card:hover .proj-thumb img{transform:scale(1.04);}
+/* fallback icon if image fails */
+.proj-thumb-icon-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.proj-thumb-badge{position:absolute;top:10px;left:12px;z-index:2;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);background:rgba(250,248,245,.92);padding:3px 9px;border-radius:100px;border:1px solid var(--line-2);font-weight:500;backdrop-filter:blur(4px);}
+.proj-body{padding:16px;}
+.proj-type{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-5);margin-bottom:5px;font-weight:500;}
+.proj-name{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--ink);margin-bottom:7px;line-height:1.3;}
+.proj-desc{font-size:12px;color:var(--ink-3);line-height:1.7;margin-bottom:13px;font-weight:300;}
+.proj-cta{font-size:11.5px;font-weight:500;color:var(--accent);display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--accent-light);border-radius:20px;transition:background var(--ease),color var(--ease);}
+.proj-cta svg{width:11px;height:11px;transition:transform var(--ease);}
+.proj-card:hover .proj-cta{background:var(--accent);color:#fff;}
+.proj-card:hover .proj-cta svg{transform:translate(2px,-2px);}
+
+
+.proj-hero-text{margin-bottom:32px;padding:22px 26px;background:linear-gradient(135deg,var(--accent-light) 0%,var(--paper-2) 100%);border-radius:14px;border:1px solid rgba(78,140,110,.15);}
+.proj-hero-line1{font-family:var(--sans);font-size:16px;font-weight:400;color:var(--ink-2);margin-bottom:5px;line-height:1.5;}
+.proj-hero-line2{font-family:var(--sans);font-size:15px;font-weight:400;color:var(--ink-2);margin-bottom:14px;line-height:1.5;}
+.proj-hero-sub{font-family:var(--sans);font-size:13px;color:var(--accent);font-weight:600;line-height:1.5;display:inline-flex;align-items:center;gap:7px;}
+.proj-hero-sub::before{content:'';width:18px;height:1.5px;background:var(--accent-mid);display:inline-block;flex-shrink:0;}
+
+/* LINKS */
+.links-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px;}
+.link-card{border:1px solid var(--line-2);border-radius:14px;padding:18px 20px;text-decoration:none;display:flex;align-items:center;gap:14px;background:var(--paper);transition:background var(--ease),border-color var(--ease),transform var(--ease),box-shadow var(--ease);}
+.link-card:hover{background:var(--paper-2);border-color:var(--paper-3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,18,16,.06);}
+.link-icon{width:40px;height:40px;background:var(--paper-2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--paper-3);transition:background var(--ease),border-color var(--ease),transform var(--ease-spring);}
+.link-card:hover .link-icon{background:var(--accent-light);border-color:rgba(78,140,110,.25);transform:scale(1.08);}
+.link-icon svg{width:17px;height:17px;color:var(--ink-4);transition:color var(--ease);}
+.link-card:hover .link-icon svg{color:var(--accent);}
+.link-label{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.link-url{font-size:10.5px;color:var(--ink-4);}
+
+/* responsive */
+@media(max-width:760px){
+  .shell{flex-direction:column;}
+  .sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid var(--line-2);padding:20px 18px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:14px;}
+  .sb-profile{margin-bottom:0;display:flex;align-items:center;gap:12px;}
+  .sb-photo-wrap{margin-bottom:0;}
+  .pill-nav{flex-direction:row;flex-wrap:wrap;margin-bottom:0;}
+  .sb-contacts,.sb-divider{display:none;}
+  .main{padding:24px 18px 60px;}
+  .skills-grid{grid-template-columns:1fr 1fr;}
+  .proj-grid,.links-grid,.two-col{grid-template-columns:1fr;}
+  .stat-row{gap:8px;}
+  .exp-bullets{padding-left:0;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-profile">
+    <div class="sb-photo-wrap">
+      <div class="sb-photo">
+        <img src="data:image/jpeg;base64,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" alt="Ashley Borde">
+      </div>
+      <div class="sb-status" title="Available for work"></div>
+    </div>
+    <div>
+      <div class="sb-name">Ashley Borde</div>
+      <div class="sb-role">Sr. UX Designer</div>
+      <div class="sb-loc">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a4 4 0 0 1 4 4c0 3-4 8-4 8S4 9 4 6a4 4 0 0 1 4-4z"/><circle cx="8" cy="6" r="1.2"/></svg>
+        Pune, India
+      </div>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <nav class="pill-nav">
+    <a href="#" class="active" data-section="about" onclick="go('about',this);return false;">
+      <span class="nav-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c0-2.76 2.24-5 5-5s5 2.24 5 5"/></svg></span>
+      <span class="nav-label">About</span>
+    </a>
+    <a href="#" data-section="resume" onclick="go('resume',this);return false;">
+      <span class="nav-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="2" width="10" height="12" rx="1.5"/><path d="M6 6h4M6 9h4M6 12h2"/></svg></span>
+      <span class="nav-label">Resume</span>
+    </a>
+    <a href="#" data-section="projects" onclick="go('projects',this);return false;">
+      <span class="nav-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg></span>
+      <span class="nav-label">Projects</span>
+    </a>
+    <a href="#" data-section="links" onclick="go('links',this);return false;">
+      <span class="nav-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 9.5a3.5 3.5 0 0 0 4.95 0l2-2a3.5 3.5 0 0 0-4.95-4.95l-1 1"/><path d="M9.5 6.5a3.5 3.5 0 0 0-4.95 0l-2 2a3.5 3.5 0 0 0 4.95 4.95l1-1"/></svg></span>
+      <span class="nav-label">Links</span>
+    </a>
+  </nav>
+  <div class="sb-divider"></div>
+  <div class="sb-contacts">
+    <a href="mailto:bordeashley@gmail.com" class="sb-contact-link">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="8" rx="1.5"/><path d="m2 4 6 5 6-5"/></svg>
+      bordeashley@gmail.com
+    </a>
+    <a href="tel:+919860101715" class="sb-contact-link">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h3l1.5 3.5-1.75 1.25A8 8 0 0 0 9.25 10.25L10.5 8.5 14 10v3a1 1 0 0 1-1 1A11 11 0 0 1 2 4a1 1 0 0 1 1-1z"/></svg>
+      +91 98601 01715
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ABOUT -->
+  <section id="about" class="section active">
+    <div class="sec-header">
+      <div class="eyebrow">Who I Am</div>
+      <h1 class="sec-title">Ashley Borde</h1>
+      <div class="sec-divider"></div>
+    </div>
+
+    <!-- decorative identity strip -->
+    <div class="about-deco-bar">
+      <span class="deco-pill"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>12+ Years</span>
+      <span class="deco-pill"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>28+ Projects</span>
+      <span class="deco-line"></span>
+    </div>
+
+
+
+        <!-- My Story — book icon -->
+    <div class="story-section">
+      <h3>
+        <span class="h3-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h7l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M10 2v3h3M5 7h6M5 10h4"/></svg>
+        </span>
+        My Story
+      </h3>
+      <div class="story-body">
+        <p>My journey into UX design started long before I knew the term "UX" existed.</p>
+        <p>As a child, I was fascinated by storytelling. Whenever I experienced something exciting—a river I discovered, a tree I climbed, or a place I visited—I would come home and sketch it for my mother. Drawing wasn't just a hobby; it was how I communicated experiences, emotions, and stories.</p>
+        <p>That passion naturally led me into the world of design. When I discovered tools like Photoshop and Illustrator, I became obsessed with creating. I designed cars, imagined architectural concepts, created promotional materials for restaurants and bars, and explored countless ways to bring ideas to life visually.</p>
+        <p>Eventually, my creativity and visual storytelling skills led me to an advertising agency, where I worked on communicating product features, unique selling points, and brand messages. There, I learned how design could influence attention and engagement.</p>
+        <p>But a question kept bothering me:</p>
+      </div>
+      <div class="callout">"What happens after we get someone's attention?"</div>
+      <div class="story-body">
+        <p>Social media campaigns generated views. Advertisements generated clicks. But could design influence actual business outcomes?</p>
+        <p>Driven by curiosity, I started exploring website design and user journeys. One of the websites I worked on ended up generating tangible business results for the client. For the first time, I saw how thoughtful design could directly impact revenue, conversions, and growth.</p>
+        <p>That experience introduced me to UX design. Suddenly, all the things I had been doing throughout my life started connecting together. The storyteller in me wanted to understand people's journeys. The designer in me wanted to simplify complexity. The business-minded thinker in me wanted to create measurable value.</p>
+        <p>Today, I spend my time understanding how people think, where they get stuck, and what prevents them from achieving their goals. For me, great UX isn't just about reducing friction. <strong>It's about respecting people's time.</strong></p>
+        <p>Every unnecessary click, every confusing decision, every support ticket, and every abandoned task represents lost value—for both the user and the business.</p>
+        <p>That's why I continuously explore two questions: <em>How can we help users achieve their goals with less effort? And how can we create sustainable business value while doing so?</em></p>
+      </div>
+    </div>
+
+    <!-- Design Philosophy — pencil/art icon -->
+    <div class="story-section">
+      <h3>
+        <span class="h3-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.5 2.5l3 3-7 7H3.5v-3l7-7z"/><path d="M8.5 4.5l3 3"/></svg>
+        </span>
+        Design Philosophy
+      </h3>
+      <div class="story-body">
+        <p>I believe good design helps people move forward with clarity and confidence. When users arrive at a product, they should immediately feel that they can accomplish what they came to do—without extensive training, lengthy documentation, or constant guidance.</p>
+        <p>Great user experiences reduce uncertainty. They help users understand what is happening, what is expected from them, how long something might take, and what they need before investing their time and effort.</p>
+        <p>One of the most frustrating aspects of poor design is when products fail to set expectations early. Users invest time moving through a journey only to discover they are missing information, permissions, or prerequisites that could have been communicated upfront.</p>
+        <p><strong>Design should respect the user's time.</strong> The best experiences are often the ones users barely notice—because everything feels obvious, predictable, and effortless.</p>
+        <p>My goal is to create products that guide users naturally while helping businesses grow through thoughtful, value-driven experiences.</p>
+      </div>
+    </div>
+
+    <!-- Beyond Work — interests icon -->
+    <div class="story-section">
+      <h3>
+        <span class="h3-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="10" height="8" rx="1.5"/><path d="M6 6V4a2 2 0 0 1 4 0v2"/><path d="M7 10h2"/></svg>
+        </span>
+        Beyond Work
+      </h3>
+      <div class="story-body" style="margin-bottom:12px;"><p>When I'm not designing, you'll usually find me:</p></div>
+      <ul class="beyond-list">
+        <li>Exploring new places and cultures through travel</li>
+        <li>Trekking through the mountains</li>
+        <li>Reading non-fiction books</li>
+        <li>Watching movies inspired by real events and true stories</li>
+        <li>Observing how people interact with products and services in everyday life</li>
+      </ul>
+      <div class="two-col">
+        <div class="list-group">
+          <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h7l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M10 2v3h3M5 7h6M5 10h4"/></svg>Favourite Books</h4>
+          <ul>
+            <li>Screw It, Let's Do It</li>
+            <li>The Power of the Subconscious Mind</li>
+            <li>The $100 Startup</li>
+            <li>48 Hours Startup</li>
+          </ul>
+        </div>
+        <div class="list-group">
+          <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="3.5" r="1.5"/><path d="M5 14l1.5-4 2 2 2-5"/><path d="M3 9l3-3 2 2 3-4"/><path d="M11 14l1-3"/></svg>Favourite Treks</h4>
+          <ul>
+            <li>Valley of Flowers</li>
+            <li>Hampta Pass</li>
+            <li>Kashmir Great Lakes</li>
+            <li>George Everest Trail</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Looking Ahead — vision/eye icon -->
+    <div class="story-section">
+      <h3>
+        <span class="h3-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13L6 8l3 3 5-8"/><path d="M11 3h3v3"/></svg>
+        </span>
+        Looking Ahead
+      </h3>
+      <div class="story-body">
+        <p>Today I'm solving problems on screens. In the future, I hope to solve larger problems that impact people's everyday lives. Design, for me, has always been about making life a little easier, a little clearer, and a little better for the people experiencing it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section id="resume" class="section">
+    <div class="sec-header">
+      <div class="eyebrow">Experience &amp; Expertise</div>
+      <h2 class="sec-title">Resume</h2>
+      <div class="sec-divider"></div>
+    </div>
+
+    <div class="resume-hero">
+      <p>I design products that help users achieve their goals effortlessly while helping businesses grow sustainably.</p>
+      <p>Over the last 12+ years, I've worked across SaaS, eCommerce, B2B, enterprise, and legacy products—launching products from 0→1, redesigning complex workflows, building design teams, and creating experiences that have directly contributed to business revenue and product adoption.</p>
+      <p>My approach combines user psychology, business strategy, and systems thinking to create experiences that are intuitive for users, valuable for businesses, and scalable for the future.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">12+</div><div class="stat-label">Years of experience</div></div>
+      <div class="stat-card"><div class="stat-num">28+</div><div class="stat-label">Projects completed</div></div>
+      <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Worldwide clients</div></div>
+    </div>
+
+    <div class="block-title">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 11h4"/></svg>
+      Work Experience
+    </div>
+
+    <!-- Momentive -->
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-logo">
+            <img src="https://momentivesoftware.com/wp-content/uploads/2025/01/No-image-default.webp" alt="Momentive Software"
+              onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\'exp-logo-fallback\'>MS</span>'">
+          </div>
+          <div>
+            <div class="exp-title">Sr. UX Designer</div>
+            <div class="exp-company">Momentive Software</div>
+          </div>
+        </div>
+        <div class="exp-date">Mar 2025 – Jun 2026</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Designed a streamlined Lightning Order process enabling staff users to create orders across different product types — events, memberships, and merchandise — for multiple users with multiple delivery locations and automated tax calculation</li>
+        <li>Familiarised the design style and patterns for products within the same vertical to ensure design consistency across the platform</li>
+      </ul>
+    </div>
+
+    <!-- Onlinesales.ai -->
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-logo">
+            <img src="https://images.yourstory.com/cs/images/companies/T6PpfqXI400x4001-1608317587010.jpg" alt="Onlinesales.ai"
+              onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\'exp-logo-fallback\'>OS</span>'">
+          </div>
+          <div>
+            <div class="exp-title">Sr. UI/UX Designer</div>
+            <div class="exp-company">Onlinesales.ai · Pune</div>
+          </div>
+        </div>
+        <div class="exp-date">May 2021 – Mar 2025</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Designed a hyperlocal ad platform used by brands like Hyundai, Mahindra, and L'Oréal to manage outlet-level advertising budgets, creatives, and offers across head office, regional, and outlet levels</li>
+        <li>Built a self-serve advertising platform for Hotstar enabling advertisers and agencies to manage campaigns independently</li>
+        <li>Designed an admin view for retailers to create ad formats and manage inventories for sellers and advertisers</li>
+        <li>Created a retailer analytics dashboard covering Demand &amp; Supply Gap, Budget Utilization, Advertiser GMV, Category Performance, and Ad Inventory Performance</li>
+        <li>Designed features for keyword, audience, and category targeting as well as keyword and category bidding</li>
+      </ul>
+    </div>
+
+    <!-- Xebec -->
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-logo">
+            <img src="https://image.isu.pub/180910052753-45a3ab945dd25b61f42a98579d216d37/jpg/page_1.jpg" alt="Xebec"
+              onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\'exp-logo-fallback\'>XC</span>'">
+          </div>
+          <div>
+            <div class="exp-title">Senior Visualizer | UI Designer</div>
+            <div class="exp-company">Xebec Communications Pvt. Ltd. · Pune</div>
+          </div>
+        </div>
+        <div class="exp-date">Apr 2019 – May 2021</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Developed UI mockups and prototypes, presented design drafts to internal teams and managers</li>
+        <li>Gathered and evaluated user requirements in collaboration with product managers and engineers</li>
+        <li>Designed conversion-focused website for Creaticity that channelled social media engagement into measurable sales growth</li>
+        <li>Designed social media posts and banner images for client digital channels</li>
+      </ul>
+    </div>
+
+    <!-- Influenstaz -->
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-logo">
+            <img src="https://media.licdn.com/dms/image/v2/C510BAQGGaBslGN2xrQ/company-logo_100_100/company-logo_100_100/0/1630577053585?e=1781740800&v=beta&t=SnDhlHJq-TLRmbr-SwiuO85DIyJPxsJ7Uls3pc1FByA" alt="Influenstaz"
+              onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\'exp-logo-fallback\'>IN</span>'">
+          </div>
+          <div>
+            <div class="exp-title">Co-Owner &amp; Product Designer</div>
+            <div class="exp-company">Influenstaz</div>
+          </div>
+        </div>
+        <div class="exp-date">Jul 2018 – Apr 2019</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Built a platform connecting advertisers and influencers to enable seamless collaboration and campaign discovery</li>
+        <li>Designed a system for brands to discover and filter influencers based on follower count across multiple social media platforms</li>
+        <li>Enabled advertisers to directly send collaboration offers and campaign requests to selected influencers</li>
+        <li>Developed a multi-platform social account linking feature allowing influencers to showcase their aggregated follower base across channels in one view</li>
+        <li>Improved transparency and matchmaking efficiency between brands and influencers for faster campaign execution</li>
+      </ul>
+    </div>
+
+    <!-- Buzzle -->
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-logo">
+            <img src="http://images-platform.99static.com/A9fIwuahCb0DycOQTRUnKF3pK9s=/128x0:896x768/fit-in/99designs-contests-attachments/18/18820/attachment_18820614" alt="Buzzle"
+              onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\'exp-logo-fallback\'>BZ</span>'">
+          </div>
+          <div>
+            <div class="exp-title">Visual Designer | Team Mentor</div>
+            <div class="exp-company">Buzzle Software Solution</div>
+          </div>
+        </div>
+        <div class="exp-date">Aug 2016 – Jul 2018</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Developed UI mockups and prototypes, presented design drafts to stakeholders</li>
+        <li>Mentored junior designers and led design reviews across the team</li>
+        <li>Designed social media posts and banner images for client websites and handles</li>
+      </ul>
+    </div>
+
+    <!-- Doodle -->
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-logo">
+            <img src="https://2.imimg.com/data2/BD/BK/MY-2618400/doodle-logo-120x120.jpg" alt="Doodle Designs"
+              onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\'exp-logo-fallback\'>DD</span>'">
+          </div>
+          <div>
+            <div class="exp-title">Graphic Designer</div>
+            <div class="exp-company">Doodle Designs Inc</div>
+          </div>
+        </div>
+        <div class="exp-date">Jun 2014 – Aug 2016</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Translated client briefs into visually compelling designs, delivering on tight timelines</li>
+        <li>Developed a Photoshop colour-swap workflow eliminating the need for multiple product photoshoots for new colour launches</li>
+        <li>Created a process for logo mockups on products from any angle, giving clients a flexible and reusable asset</li>
+        <li>Proficient in Adobe Creative Suite for dynamic visual output</li>
+      </ul>
+    </div>
+
+    <div class="block-title">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+      Core Skills
+    </div>
+    <div class="skills-grid">
+      <div class="sk-group">
+        <div class="sk-group-title">UX Research</div>
+        <div class="sk-tags">
+          <span class="sk-tag">User Interviews</span><span class="sk-tag">Usability Testing</span><span class="sk-tag">Persona Development</span><span class="sk-tag">Journey Mapping</span><span class="sk-tag">Heuristic Evaluation</span><span class="sk-tag">UX Audits</span><span class="sk-tag">Information Architecture</span>
+        </div>
+      </div>
+      <div class="sk-group">
+        <div class="sk-group-title">Product Thinking</div>
+        <div class="sk-tags">
+          <span class="sk-tag">Problem Framing</span><span class="sk-tag">Requirements Analysis</span><span class="sk-tag">Feature Prioritization</span><span class="sk-tag">Data-Informed Decisions</span><span class="sk-tag">Design Strategy</span>
+        </div>
+      </div>
+      <div class="sk-group">
+        <div class="sk-group-title">Tools</div>
+        <div class="sk-tags">
+          <span class="sk-tag">Figma</span><span class="sk-tag">FigmaMake</span><span class="sk-tag">ChatGPT</span><span class="sk-tag">Claude Design</span><span class="sk-tag">Lovable</span><span class="sk-tag">Whimsical</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-title">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1 2.5 3 .5-2 2 .5 3L8 9l-2.5 1 .5-3-2-2 3-.5z"/></svg>
+      Education
+    </div>
+    <div class="edu-item">
+      <div class="edu-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7l6-4 6 4-6 4-6-4z"/><path d="M14 7v5M5 9.5V13c1 .8 2 1 3 1s2-.2 3-1V9.5"/></svg></div>
+      <div class="edu-body">
+        <div class="edu-school">Aptech Learnings</div>
+        <div class="edu-degree">Visual and Web Design</div>
+        <div class="edu-sub">Design and Visual Communications, General</div>
+      </div>
+      <div class="edu-date">2011 – 2014</div>
+    </div>
+
+    <div class="block-title">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8l2.5 2.5L11 5"/><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+      Certifications
+    </div>
+    <a class="cert-item" href="https://verify.skilljar.com/c/wgy7icewfqty" target="_blank">
+      <div class="cert-logo">
+        <img src="https://logowik.com/content/uploads/images/anthropic-ai4629.logowik.com.webp" alt="Anthropic"
+          onerror="this.style.display='none';this.parentNode.insertAdjacentHTML('beforeend','<span style=\'font-size:10px;font-weight:700;color:var(--accent-mid)\'>AN</span>')">
+      </div>
+      <div class="cert-body">
+        <div class="cert-name">AI Capabilities and Limitations</div>
+        <div class="cert-org">Anthropic</div>
+      </div>
+      <div class="cert-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+    </a>
+    <a class="cert-item" href="https://ixdf.org/members/ashley-borde/certificate/course/48fa43ba-9a5e-4414-84f0-861b01f8a334" target="_blank">
+      <div class="cert-logo">
+        <img src="https://miro.medium.com/v2/resize:fill:176:176/1*rkIZcxDw77S3C5qFjfVnFw.jpeg" alt="Interaction Design Foundation"
+          onerror="this.style.display='none';this.parentNode.insertAdjacentHTML('beforeend','<span style=\'font-size:10px;font-weight:700;color:var(--accent-mid)\'>IDF</span>')">
+      </div>
+      <div class="cert-body">
+        <div class="cert-name">AI for Designers</div>
+        <div class="cert-org">Interaction Design Foundation</div>
+      </div>
+      <div class="cert-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+    </a>
+    <a class="cert-item" href="https://www.interaction-design.org/members/ashley-borde/certificate/course/f39edd7e-a161-49e7-9bf4-eb587ea0181a" target="_blank">
+      <div class="cert-logo">
+        <img src="https://miro.medium.com/v2/resize:fill:176:176/1*rkIZcxDw77S3C5qFjfVnFw.jpeg" alt="Interaction Design Foundation"
+          onerror="this.style.display='none';this.parentNode.insertAdjacentHTML('beforeend','<span style=\'font-size:10px;font-weight:700;color:var(--accent-mid)\'>IDF</span>')">
+      </div>
+      <div class="cert-body">
+        <div class="cert-name">Mobile UX Strategy: How To Build Successful Products</div>
+        <div class="cert-org">Interaction Design Foundation</div>
+      </div>
+      <div class="cert-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+    </a>
+    <a class="cert-item" href="https://www.interaction-design.org/members/ashley-borde/certificate/course/95fc93a4-07f8-46a5-99ef-41b68d613f46" target="_blank">
+      <div class="cert-logo">
+        <img src="https://miro.medium.com/v2/resize:fill:176:176/1*rkIZcxDw77S3C5qFjfVnFw.jpeg" alt="Interaction Design Foundation"
+          onerror="this.style.display='none';this.parentNode.insertAdjacentHTML('beforeend','<span style=\'font-size:10px;font-weight:700;color:var(--accent-mid)\'>IDF</span>')">
+      </div>
+      <div class="cert-body">
+        <div class="cert-name">Design Thinking: The Ultimate Guide</div>
+        <div class="cert-org">Interaction Design Foundation</div>
+      </div>
+      <div class="cert-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+    </a>
+    <a class="cert-item" href="https://www.interaction-design.org/members/ashley-borde/certificate/course/8896cef9-abb9-4ec6-8b74-585db73aede5" target="_blank">
+      <div class="cert-logo">
+        <img src="https://miro.medium.com/v2/resize:fill:176:176/1*rkIZcxDw77S3C5qFjfVnFw.jpeg" alt="Interaction Design Foundation"
+          onerror="this.style.display='none';this.parentNode.insertAdjacentHTML('beforeend','<span style=\'font-size:10px;font-weight:700;color:var(--accent-mid)\'>IDF</span>')">
+      </div>
+      <div class="cert-body">
+        <div class="cert-name">Mobile UI Design</div>
+        <div class="cert-org">Interaction Design Foundation</div>
+      </div>
+      <div class="cert-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+    </a>
+    </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="sec-header">
+      <div class="eyebrow">Products I've Helped Shape</div>
+      <h2 class="sec-title">Projects</h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="proj-hero-text">
+      <p class="proj-hero-line1">Every product has a story.</p>
+      <p class="proj-hero-line2">These are the experiences I've helped shape.</p>
+      <p class="proj-hero-sub">Six projects across ad tech, fintech, government, and consumer domains.</p>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- Hotstar -->
+      <a class="proj-card" href="https://www.figma.com/proto/pbuE2yi3Pgi9bHrwfgyTkR/Hotstar-case-study?page-id=0%3A1&node-id=28-5966&node-type=frame&viewport=-455%2C629%2C0.02&t=H3I8mcUCFhPRogjO-1&scaling=scale-down-width&content-scaling=fixed" target="_blank">
+        <div class="proj-thumb">
+          <div class="proj-thumb-badge">Ad tech · Case study</div>
+          <img src="https://techent.tv/wp-content/uploads/2021/05/Disney-Hotstar-Logo.jpg" alt="Hotstar"
+            onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">OTT · Self-serve advertising</div>
+          <div class="proj-name">Hotstar Ad Portal</div>
+          <div class="proj-desc">Improved Hotstar's ad portal — the primary platform for managing OTT advertisements. Focused on increasing ad spend per advertiser, enhancing usability, and driving adoption.</div>
+          <span class="proj-cta">View on Figma <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        </div>
+      </a>
+
+      <!-- Ujjivan -->
+      <a class="proj-card" href="https://www.figma.com/deck/w9JMIhZuCdwIm027EKzTrT/Ujjivan-UX-Audit?node-id=3-65&node-type=slide&viewport=-104%2C9%2C0.5&t=9LlgdOvlamScxqvY-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" target="_blank">
+        <div class="proj-thumb">
+          <div class="proj-thumb-badge">Fintech · UX audit</div>
+          <img src="https://images.indianexpress.com/2019/12/Ujjivan-Small-Finance-Bank-logo-759-1.jpg?resize=450" alt="Ujjivan"
+            onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">Small finance bank · Research</div>
+          <div class="proj-name">Ujjivan UX Audit</div>
+          <div class="proj-desc">Conducted a comprehensive UX audit for Ujjivan, identifying usability gaps and providing actionable recommendations for improvement.</div>
+          <span class="proj-cta">View audit deck <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        </div>
+      </a>
+
+      <!-- Presence -->
+      <a class="proj-card" href="https://www.figma.com/deck/ALbt7FFq4KJvatd035fItw/Presence-usability-testing?node-id=2-60&node-type=slide&viewport=-104%2C9%2C0.5&t=39ngfJMf8gJ8b6NG-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" target="_blank">
+        <div class="proj-thumb">
+          <div class="proj-thumb-badge">Social media · Research</div>
+          <img src="https://www.acil.in/wp-content/uploads/2024/04/Frame-169.jpg" alt="Presence"
+            onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">SaaS · Usability testing</div>
+          <div class="proj-name">Presence Usability Testing</div>
+          <div class="proj-desc">Carried out usability testing for Presence, a social media management tool — analysing task completion times and identifying areas for improvement.</div>
+          <span class="proj-cta">View research deck <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        </div>
+      </a>
+
+      <!-- Rent It -->
+      <a class="proj-card" href="https://www.behance.net/gallery/137232505/Rent-it" target="_blank">
+        <div class="proj-thumb">
+          <div class="proj-thumb-badge">Consumer · UI design</div>
+          <img src="https://couponqueen.co.uk/wp-content/uploads/2025/06/rent.jpg" alt="Rent It"
+            onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">Booking app · Visual design</div>
+          <div class="proj-name">Rent It</div>
+          <div class="proj-desc">Designed intuitive and visually engaging UI screens for RentIt, a booking app for villas and studios.</div>
+          <span class="proj-cta">View on Behance <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        </div>
+      </a>
+
+      <!-- EPFO -->
+      <a class="proj-card" href="https://www.figma.com/proto/pbuE2yi3Pgi9bHrwfgyTkR/Hotstar-case-study?page-id=0%3A1&node-id=43-4110&node-type=frame&viewport=-5643%2C1542%2C0.08&t=AkEIRbDXiwKVK1CX-1&scaling=min-zoom&content-scaling=fixed" target="_blank">
+        <div class="proj-thumb">
+          <div class="proj-thumb-badge">Government · Redesign</div>
+          <img src="https://img.manoramayearbook.in/content/dam/yearbook/learn/world/images/2023/jan/epfo.jpg" alt="EPFO"
+            onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">Gov website · Accessibility</div>
+          <div class="proj-name">EPFO Website Redesign</div>
+          <div class="proj-desc">Redesigned the EPFO government website, enhancing navigation, accessibility, and visual design based on user pain point analysis.</div>
+          <span class="proj-cta">View prototype <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        </div>
+      </a>
+
+      <!-- Daily UI -->
+      <a class="proj-card" href="https://dribbble.com/ashley__borde" target="_blank">
+        <div class="proj-thumb">
+          <div class="proj-thumb-badge">UI skills · Daily challenge</div>
+          <img src="https://miro.medium.com/max/1200/1*CMqX-yh5LR7Es3VwDIO0KQ.jpeg" alt="Daily UI"
+            onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">Portfolio · UI practice</div>
+          <div class="proj-name">Daily UI Challenges</div>
+          <div class="proj-desc">Daily design challenges to refine UI skills, encourage creativity, and build a diverse and impactful design portfolio.</div>
+          <span class="proj-cta">View on Dribbble <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- LINKS -->
+  <section id="links" class="section">
+    <div class="sec-header">
+      <div class="eyebrow">Let's Connect</div>
+      <h2 class="sec-title">Find Me Online</h2>
+      <div class="sec-divider"></div>
+    </div>
+
+    <div class="links-grid">
+      <a href="https://dribbble.com/ashley__borde/shots" target="_blank" class="link-card">
+        <div class="link-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M2 8c2-3 5-5 8-5M4 12c1-2 4-6 8-4M8 14c0-3 1-7 4-7"/></svg></div>
+        <div><div class="link-label">Dribbble</div><div class="link-url">dribbble.com/ashley__borde</div></div>
+      </a>
+      <a href="https://in.linkedin.com/in/ashley-borde-13985a168" target="_blank" class="link-card">
+        <div class="link-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 7v4M5 5v.01M8 11V8.5c0-.83.67-1.5 1.5-1.5S11 7.67 11 8.5V11M8 7v4"/></svg></div>
+        <div><div class="link-label">LinkedIn</div><div class="link-url">in/ashley-borde-13985a168</div></div>
+      </a>
+      <a href="https://www.behance.net/gallery/137232505/Rent-it" target="_blank" class="link-card">
+        <div class="link-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h5.5a2 2 0 0 1 0 4H2zM2 9h6a2 2 0 0 1 0 4H2z"/><path d="M10 6h4M11.5 9a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM14 11h-5"/></svg></div>
+        <div><div class="link-label">Behance</div><div class="link-url">behance.net/ashley__borde</div></div>
+      </a>
+      <a href="mailto:bordeashley@gmail.com" class="link-card">
+        <div class="link-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="8" rx="1.5"/><path d="m2 4 6 5 6-5"/></svg></div>
+        <div><div class="link-label">Email</div><div class="link-url">bordeashley@gmail.com</div></div>
+      </a>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+function go(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.pill-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
